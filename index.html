@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mattison Studio — Design & Development</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0C0C0E;
+  --bg-elevated: #141418;
+  --bg-card: #1A1A20;
+  --text: #F0EDE8;
+  --text-muted: #8A8A8F;
+  --text-dim: #5A5A5F;
+  --accent: #C8FF73;
+  --accent-dim: rgba(200, 255, 115, 0.08);
+  --border: rgba(255,255,255,0.06);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+
+/* ---- NOISE OVERLAY ---- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* ---- LAYOUT ---- */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 6rem 0; }
+
+/* ---- NAV ---- */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(12,12,14,0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  background: var(--accent) !important;
+  color: var(--bg) !important;
+  padding: 0.6rem 1.25rem;
+  border-radius: 100px;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.02em;
+  transition: transform 0.3s, box-shadow 0.3s !important;
+}
+
+.nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 24px rgba(200, 255, 115, 0.25);
+}
+
+/* ---- HERO ---- */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 6rem;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(200,255,115,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: var(--accent-dim);
+  border: 1px solid rgba(200,255,115,0.12);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-bottom: 2rem;
+  width: fit-content;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  max-width: 900px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin-top: 1.75rem;
+  line-height: 1.7;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  align-items: center;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200, 255, 115, 0.3);
+}
+
+.btn-primary svg { transition: transform 0.3s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+
+.btn-secondary {
+  padding: 0.9rem 2rem;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.03);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- STATS BAR ---- */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 5rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.stat-item h3 {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  color: var(--accent);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.stat-item p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 0.4rem;
+  font-weight: 500;
+}
+
+/* ---- SERVICES ---- */
+.services { background: var(--bg); }
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 600px;
+  margin-bottom: 3.5rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.service-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.25rem;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover { border-color: rgba(255,255,255,0.1); background: var(--bg-card); }
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent-dim);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+}
+
+.service-card h3 {
+  font-family: var(--sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.service-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.service-price {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.service-price span {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* ---- WORK ---- */
+.work { background: var(--bg-elevated); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.work-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.work-card:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-4px); }
+
+.work-thumb {
+  width: 100%;
+  aspect-ratio: 16/10;
+  position: relative;
+  overflow: hidden;
+}
+
+.work-thumb-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+}
+
+.work-card:hover .work-thumb-inner { transform: scale(1.03); }
+
+/* Placeholder project visuals */
+.thumb-1 {
+  background: linear-gradient(135deg, #1a2a1a 0%, #0d1f0d 50%, #1a2a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-2 {
+  background: linear-gradient(135deg, #1a1a2a 0%, #0d0d1f 50%, #1a1a2a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-3 {
+  background: linear-gradient(135deg, #2a1a1a 0%, #1f0d0d 50%, #2a1a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-4 {
+  background: linear-gradient(135deg, #2a2a1a 0%, #1f1f0d 50%, #2a2a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-mockup {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.08);
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+.work-info { padding: 1.5rem 1.75rem; }
+
+.work-info h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.work-info p { color: var(--text-muted); font-size: 0.85rem; }
+
+.work-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.work-tag {
+  padding: 0.25rem 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 100px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+/* ---- PROCESS ---- */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  counter-reset: step;
+}
+
+.process-step {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  position: relative;
+  counter-increment: step;
+  transition: all 0.3s;
+}
+
+.process-step:hover { border-color: rgba(200,255,115,0.15); }
+
+.process-step::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  color: rgba(200,255,115,0.12);
+  font-weight: 400;
+  line-height: 1;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.process-step h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.process-step p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ---- ABOUT ---- */
+.about { background: var(--bg-elevated); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-portrait {
+  aspect-ratio: 4/5;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(200,255,115,0.03) 0%, transparent 60%);
+}
+
+.about-portrait-placeholder {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.about-content .section-title { margin-bottom: 1.5rem; }
+
+.about-text {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+}
+
+.about-highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.about-highlight {
+  padding: 1.25rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.about-highlight h4 {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.about-highlight p {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ---- CTA ---- */
+.cta-section {
+  padding: 8rem 0;
+  text-align: center;
+}
+
+.cta-section .section-title {
+  max-width: 700px;
+  margin: 0 auto 1.25rem;
+}
+
+.cta-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+/* ---- FOOTER ---- */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 0;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left p { color: var(--text-dim); font-size: 0.8rem; }
+.footer-left a { color: var(--text-dim); text-decoration: none; }
+.footer-left a:hover { color: var(--text-muted); }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--text); }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 960px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .work-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+}
+
+@media (max-width: 640px) {
+  .container { padding: 0 1.25rem; }
+  section { padding: 4rem 0; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .hero { padding-top: 5rem; min-height: auto; padding-bottom: 3rem; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .stats-bar { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem; padding-top: 2rem; }
+  .process-grid { grid-template-columns: 1fr; }
+  .about-highlights { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">mattison<span>.</span>studio</a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-cta">Start a project</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Available for new projects</div>
+    <h1>Websites that work as<br>hard as <em>you do</em></h1>
+    <p class="hero-sub">Design and development studio helping growing businesses turn their online presence into their strongest sales tool.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">
+        Book a free call
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#work" class="btn-secondary">View recent work</a>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <h3>6+</h3>
+        <p>Years of professional experience</p>
+      </div>
+      <div class="stat-item">
+        <h3>50+</h3>
+        <p>Projects delivered</p>
+      </div>
+      <div class="stat-item">
+        <h3>100%</h3>
+        <p>Senior-level attention on every project</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-label">Services</div>
+    <h2 class="section-title">Everything you need to look credible, convert visitors, and grow.</h2>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Website Design & Build</h3>
+        <p>Bespoke websites designed to convert. From strategy and wireframes through to a fully responsive, fast-loading site you own completely.</p>
+        <div class="service-price">Starting from <span>£3,000</span></div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Ongoing Design Retainer</h3>
+        <p>A senior designer on call. Monthly design and development support for businesses that need consistent, high-quality creative work without hiring full-time.</p>
+        <div class="service-price">From <span>£500/month</span></div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+        </div>
+        <h3>Landing Page Sprints</h3>
+        <p>High-converting landing pages designed and built in 5–10 days. Perfect for product launches, campaigns, or testing new offers quickly.</p>
+        <div class="service-price">Starting from <span>£1,000</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="container">
+    <div class="section-label">Selected Work</div>
+    <h2 class="section-title">Projects that moved the needle.</h2>
+
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-thumb">
+          <div class="work-thumb-inner thumb-1">
+            <span class="thumb-mockup">Project Screenshot</span>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3>EveryBreed</h3>
+          <p>Programmatic content platform — 200+ pages of structured breed data</p>
+          <div class="work-tags">
+            <span class="work-tag">Design</span>
+            <span class="work-tag">Development</span>
+            <span class="work-tag">SEO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-thumb">
+          <div class="work-thumb-inner thumb-2">
+            <span class="thumb-mockup">Project Screenshot</span>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3>Operations OS</h3>
+          <p>Industry-specific Notion operating system for agency management</p>
+          <div class="work-tags">
+            <span class="work-tag">Product Design</span>
+            <span class="work-tag">Systems</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-thumb">
+          <div class="work-thumb-inner thumb-3">
+            <span class="thumb-mockup">Project Screenshot</span>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3>Client Project</h3>
+          <p>E-commerce redesign — increased conversion rate by 35%</p>
+          <div class="work-tags">
+            <span class="work-tag">UI/UX</span>
+            <span class="work-tag">Development</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-thumb">
+          <div class="work-thumb-inner thumb-4">
+            <span class="thumb-mockup">Project Screenshot</span>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3>Client Project</h3>
+          <p>B2B SaaS landing page — 2x improvement in lead generation</p>
+          <div class="work-tags">
+            <span class="work-tag">Design</span>
+            <span class="work-tag">Conversion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="container">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">No fluff. No endless meetings. Just great work, delivered.</h2>
+
+    <div class="process-grid">
+      <div class="process-step">
+        <h3>Discovery Call</h3>
+        <p>A 20-minute conversation to understand your business, goals, and what success looks like. No sales pitch — just a genuine chat.</p>
+      </div>
+      <div class="process-step">
+        <h3>Proposal & Plan</h3>
+        <p>A clear, one-page proposal with scope, timeline, and fixed pricing. No surprises, no hourly billing, no scope ambiguity.</p>
+      </div>
+      <div class="process-step">
+        <h3>Design & Build</h3>
+        <p>You get a senior designer working directly on your project — not a junior who's been handed a brief. Regular check-ins keep things on track.</p>
+      </div>
+      <div class="process-step">
+        <h3>Launch & Support</h3>
+        <p>We launch together, then I stick around for 30 days to fix anything that needs attention. Optional ongoing retainer if you need it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-portrait">
+        <span class="about-portrait-placeholder">Your photo here</span>
+      </div>
+      <div class="about-content">
+        <div class="section-label">About</div>
+        <h2 class="section-title">Senior-level design,<br>without the agency markup.</h2>
+        <p class="about-text">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms.</p>
+        <p class="about-text">Mattison Studio is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
+
+        <div class="about-highlights">
+          <div class="about-highlight">
+            <h4>Background</h4>
+            <p>6 years at a leading UK agency</p>
+          </div>
+          <div class="about-highlight">
+            <h4>Expertise</h4>
+            <p>Design, development & strategy</p>
+          </div>
+          <div class="about-highlight">
+            <h4>Approach</h4>
+            <p>Fixed pricing, no surprises</p>
+          </div>
+          <div class="about-highlight">
+            <h4>Availability</h4>
+            <p>2–3 projects at a time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="section-label">Get started</div>
+    <h2 class="section-title">Got a project in mind?<br>Let's talk.</h2>
+    <p class="cta-subtitle">Book a free 20-minute discovery call. No commitment, no sales pitch — just a conversation about what you need and whether we're a good fit.</p>
+    <a href="mailto:jack@mattison.studio" class="btn-primary">
+      Book a free call
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <p>&copy; 2026 Mattison Studio. <a href="mailto:jack@mattison.studio">jack@mattison.studio</a></p>
+      </div>
+      <div class="footer-links">
+        <a href="#">LinkedIn</a>
+        <a href="#">Twitter</a>
+        <a href="#">Dribbble</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
