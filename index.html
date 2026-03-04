@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mattison Studio — Design & Development</title>
+<title>Prism26 — Design & Development</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -117,6 +117,113 @@ nav {
   transform: translateY(-1px);
   box-shadow: 0 4px 24px rgba(200, 255, 115, 0.25);
 }
+
+/* Hamburger: hidden on desktop */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.3s, background 0.3s;
+  gap: 5px;
+}
+.nav-toggle:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+}
+.nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.nav-toggle span:nth-child(1) { transform: translateY(0) rotate(0); }
+.nav-toggle span:nth-child(2) { opacity: 1; }
+.nav-toggle span:nth-child(3) { transform: translateY(0) rotate(0); }
+nav.is-open .nav-toggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+nav.is-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+nav.is-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: 0;
+  z-index: 99;
+  background: rgba(12,12,14,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+nav.is-open .nav-overlay {
+  opacity: 1;
+}
+
+.nav-drawer {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 101;
+  padding: 5rem 2rem 2rem;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  flex-direction: column;
+  gap: 0.25rem;
+  transform: translateY(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+}
+nav.is-open .nav-drawer {
+  transform: translateY(0);
+}
+
+.nav-drawer a {
+  display: block;
+  padding: 1rem 0;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.nav-drawer a.nav-cta {
+  border-bottom: none;
+  margin-top: 0.5rem;
+}
+.nav-drawer a:hover {
+  color: var(--accent);
+  padding-left: 0.5rem;
+}
+.nav-drawer a.nav-cta {
+  text-align: center;
+  margin-top: 0.75rem;
+  padding: 0.9rem 1.5rem !important;
+  border-radius: 100px;
+}
+
+body.menu-open { overflow: hidden; }
 
 /* ---- HERO ---- */
 .hero {
@@ -678,7 +785,12 @@ footer {
   .nav-inner,
   .hero-inner { padding: 0 1.25rem; }
   section { padding: 4rem 0; }
-  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-links { display: none; }
+  .nav-overlay,
+  .nav-drawer { display: flex; pointer-events: none; }
+  nav.is-open .nav-overlay,
+  nav.is-open .nav-drawer { pointer-events: auto; }
   .hero { padding-top: 6rem; min-height: auto; padding-bottom: 3rem; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .stats-bar { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem; padding-top: 2rem; }
@@ -692,9 +804,17 @@ footer {
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav" aria-label="Main navigation">
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+  <div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-cta">Start a project</a>
+  </div>
   <div class="nav-inner">
-    <a href="#" class="nav-logo">mattison<span>.</span>studio</a>
+    <a href="#" class="nav-logo">Prism<span>26</span></a>
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#work">Work</a>
@@ -702,6 +822,11 @@ footer {
       <a href="#about">About</a>
       <a href="#contact" class="nav-cta">Start a project</a>
     </div>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </nav>
 
@@ -918,7 +1043,7 @@ footer {
         <div class="section-label">About</div>
         <h2 class="section-title">Senior-level design,<br>without the agency markup.</h2>
         <p class="about-text">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms.</p>
-        <p class="about-text">Mattison Studio is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
+        <p class="about-text">Prism26 is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
 
         <div class="about-highlights">
           <div class="about-highlight">
@@ -949,7 +1074,7 @@ footer {
     <div class="section-label">Get started</div>
     <h2 class="section-title">Got a project in mind?<br>Let's talk.</h2>
     <p class="cta-subtitle">Book a free 20-minute discovery call. No commitment, no sales pitch — just a conversation about what you need and whether we're a good fit.</p>
-    <a href="mailto:jack@mattison.studio" class="btn-primary">
+    <a href="mailto:jack@prism26.com" class="btn-primary">
       Book a free call
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
@@ -961,7 +1086,7 @@ footer {
   <div class="container">
     <div class="footer-inner">
       <div class="footer-left">
-        <p>&copy; 2026 Mattison Studio. <a href="mailto:jack@mattison.studio">jack@mattison.studio</a></p>
+        <p>&copy; 2026 Prism26. <a href="mailto:jack@prism26.com">jack@prism26.com</a></p>
       </div>
       <div class="footer-links">
         <a href="#">LinkedIn</a>
@@ -971,6 +1096,40 @@ footer {
     </div>
   </div>
 </footer>
+
+<script>
+(function() {
+  var nav = document.getElementById('nav');
+  var toggle = document.getElementById('nav-toggle');
+  var overlay = document.getElementById('nav-overlay');
+  var drawer = document.getElementById('nav-drawer');
+
+  function openMenu() {
+    nav.classList.add('is-open');
+    document.body.classList.add('menu-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    overlay.setAttribute('aria-hidden', 'false');
+    drawer.setAttribute('aria-hidden', 'false');
+  }
+  function closeMenu() {
+    nav.classList.remove('is-open');
+    document.body.classList.remove('menu-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    overlay.setAttribute('aria-hidden', 'true');
+    drawer.setAttribute('aria-hidden', 'true');
+  }
+
+  if (toggle) toggle.addEventListener('click', function() {
+    nav.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+  if (overlay) overlay.addEventListener('click', closeMenu);
+  drawer.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
 
 </body>
 </html>
