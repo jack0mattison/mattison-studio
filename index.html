@@ -128,6 +128,13 @@ nav {
   position: relative;
 }
 
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
 .hero::after {
   content: '';
   position: absolute;
@@ -645,7 +652,8 @@ footer {
 
 @media (max-width: 640px) {
   .container { padding: 0 1.25rem; }
-  .nav-inner { padding: 0 1.25rem; }
+  .nav-inner,
+  .hero-inner { padding: 0 1.25rem; }
   section { padding: 4rem 0; }
   .nav-links a:not(.nav-cta) { display: none; }
   .hero { padding-top: 6rem; min-height: auto; padding-bottom: 3rem; }
@@ -675,7 +683,7 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
-  <div class="container">
+  <div class="hero-inner">
     <div class="hero-tag">Available for new projects</div>
     <h1>Websites that work as<br>hard as <em>you do</em></h1>
     <p class="hero-sub">Design and development studio helping growing businesses turn their online presence into their strongest sales tool.</p>
