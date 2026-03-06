@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vision26 — Design & Development</title>
+<script>
+(function(){
+  var t=localStorage.getItem('theme')||'dark';
+  if(t==='dark')document.documentElement.classList.add('dark');
+  else document.documentElement.classList.remove('dark');
+})();
+</script>
+<title>vision26 — Design & Development</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -11,6 +18,24 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
+  --bg: #F5F4F0;
+  --bg-elevated: #EEEDE8;
+  --bg-card: #E8E6E0;
+  --text: #1A1A1E;
+  --text-muted: #5A5A5F;
+  --text-dim: #8A8A8F;
+  --accent: #5B8A2E;
+  --accent-dim: rgba(91, 138, 46, 0.12);
+  --border: rgba(0,0,0,0.08);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --nav-pill-bg: rgba(245,244,240,0.9);
+  --nav-pill-border: rgba(0,0,0,0.06);
+}
+
+html.dark {
   --bg: #0C0C0E;
   --bg-elevated: #141418;
   --bg-card: #1A1A20;
@@ -20,10 +45,8 @@
   --accent: #C8FF73;
   --accent-dim: rgba(200, 255, 115, 0.08);
   --border: rgba(255,255,255,0.06);
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans: 'DM Sans', -apple-system, sans-serif;
-  --radius: 16px;
-  --radius-sm: 10px;
+  --nav-pill-bg: rgba(18,18,22,0.85);
+  --nav-pill-border: rgba(255,255,255,0.08);
 }
 
 html { scroll-behavior: smooth; font-size: 16px; }
@@ -44,7 +67,7 @@ body {
   position: fixed;
   top: 0; left: 0;
   width: 10px; height: 10px;
-  background: #C8FF73;
+  background: var(--accent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
@@ -60,7 +83,7 @@ body {
   position: fixed;
   top: 0; left: 0;
   width: 38px; height: 38px;
-  border: 1.5px solid rgba(200,255,115,0.35);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99998;
@@ -73,7 +96,7 @@ body {
 }
 
 body.cur-hover #cursor { width: 6px; height: 6px; }
-body.cur-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(200,255,115,0.55); }
+body.cur-hover #cursor-ring { width: 56px; height: 56px; border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
 body.cur-text  #cursor { width: 2px; height: 24px; border-radius: 2px; }
 body.cur-text  #cursor-ring { opacity: 0; }
 
@@ -109,24 +132,29 @@ nav {
 }
 
 .nav-pill {
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  background: rgba(18,18,22,0.85);
+  background: var(--nav-pill-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--nav-pill-border);
   border-radius: 100px;
   padding: 0.6rem 0.6rem 0.6rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   pointer-events: all;
-  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, padding 0.4s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 nav.scrolled .nav-pill {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  max-width: 550px;
+}
+html.dark nav.scrolled .nav-pill {
   box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-  border-color: rgba(200,255,115,0.1);
 }
 
 .nav-inner {
@@ -194,6 +222,33 @@ nav.scrolled .nav-pill {
   transform: translateY(-1px);
   box-shadow: 0 4px 24px rgba(200, 255, 115, 0.25);
 }
+
+/* ---- THEME TOGGLE ---- */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--text) 15%, transparent);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .icon-dark { display: block; }
+.theme-toggle .icon-light { display: none; }
+html.dark .theme-toggle .icon-dark { display: none; }
+html.dark .theme-toggle .icon-light { display: block; }
+.theme-toggle-drawer { margin-top: 1rem; align-self: flex-start; }
 
 /* Hamburger: hidden on desktop */
 .nav-toggle {
@@ -321,10 +376,10 @@ body.menu-open { overflow: hidden; }
 /* ---- MARQUEE ---- */
 .marquee-wrap {
   overflow: hidden;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   padding: 1.1rem 0;
-  background: #131316;
+  background: var(--bg-elevated);
 }
 .marquee-inner {
   display: flex;
@@ -345,15 +400,15 @@ body.menu-open { overflow: hidden; }
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: #4A4A4F;
+  color: var(--text-dim);
   white-space: nowrap;
   transition: color 0.3s;
 }
-.mq-item:hover { color: #8A8A8F; }
+.mq-item:hover { color: var(--text-muted); }
 .mq-dot {
   display: inline-block;
   width: 4px; height: 4px;
-  background: #C8FF73;
+  background: var(--accent);
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -366,6 +421,24 @@ body.menu-open { overflow: hidden; }
   justify-content: center;
   padding-top: 7.5rem;
   position: relative;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 85%, transparent) 40%, color-mix(in srgb, var(--bg) 70%, transparent) 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hero-inner {
@@ -374,6 +447,8 @@ body.menu-open { overflow: hidden; }
   padding: 0 2rem;
   width: 100%;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .hero::after {
@@ -386,6 +461,7 @@ body.menu-open { overflow: hidden; }
   background: radial-gradient(circle, rgba(200,255,115,0.04) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
+  z-index: 1;
 }
 
 .hero-tag {
@@ -956,18 +1032,24 @@ footer {
     <a href="#work">Work</a>
     <a href="#process">Process</a>
     <a href="#about">About</a>
-    <span class="mag-wrap"><a href="#contact" class="nav-cta">Start a project</a></span>
+    <button type="button" class="theme-toggle theme-toggle-drawer" id="theme-toggle-drawer" aria-label="Toggle dark mode">
+      <svg class="icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
   </div>
   <div class="nav-pill">
     <div class="nav-inner">
-      <a href="#" class="nav-logo">Vision<span>26</span></a>
+      <a href="#" class="nav-logo">vision<span>26</span></a>
       <div class="nav-links">
         <a href="#services">Services</a>
         <a href="#work">Work</a>
         <a href="#process">Process</a>
         <a href="#about">About</a>
-        <span class="mag-wrap"><a href="#contact" class="nav-cta">Start a project</a></span>
       </div>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
         <span></span>
         <span></span>
@@ -979,6 +1061,10 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
+  <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+    <source src="header-bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-overlay"></div>
   <div class="hero-inner">
     <div class="hero-tag">Available for new projects</div>
     <h1>Websites that work as<br>hard as <em>you do</em></h1>
@@ -1200,7 +1286,7 @@ footer {
         <div class="section-label reveal">About</div>
         <h2 class="section-title reveal">Senior-level design,<br>without the agency markup.</h2>
         <p class="about-text reveal reveal-d1">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms.</p>
-        <p class="about-text reveal reveal-d2">Vision26 is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
+        <p class="about-text reveal reveal-d2">vision26 is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
 
         <div class="about-highlights">
           <div class="about-highlight reveal reveal-d1">
@@ -1231,7 +1317,7 @@ footer {
     <div class="section-label reveal">Get started</div>
     <h2 class="section-title reveal">Got a project in mind?<br>Let's talk.</h2>
     <p class="cta-subtitle reveal">Book a free 20-minute discovery call. No commitment, no sales pitch — just a conversation about what you need and whether we're a good fit.</p>
-    <span class="mag-wrap"><a href="mailto:jack@vision26.com" class="btn-primary">
+    <span class="mag-wrap"><a href="mailto:jack@vision26.co.uk" class="btn-primary">
       Book a free call
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a></span>
@@ -1243,7 +1329,7 @@ footer {
   <div class="container">
     <div class="footer-inner">
       <div class="footer-left">
-        <p>&copy; 2026 Vision26. <a href="mailto:jack@vision26.com">jack@vision26.com</a></p>
+        <p>&copy; 2026 vision26. <a href="mailto:jack@vision26.co.uk">jack@vision26.co.uk</a></p>
       </div>
       <div class="footer-links">
         <a href="#">LinkedIn</a>
@@ -1293,6 +1379,26 @@ footer {
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+})();
+
+// --- THEME TOGGLE ---
+(function() {
+  function setTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+  function toggleTheme() {
+    setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark');
+  }
+  var btn = document.getElementById('theme-toggle');
+  var btnDrawer = document.getElementById('theme-toggle-drawer');
+  if (btn) btn.addEventListener('click', toggleTheme);
+  if (btnDrawer) btnDrawer.addEventListener('click', toggleTheme);
 })();
 
 // --- CUSTOM CURSOR ---
