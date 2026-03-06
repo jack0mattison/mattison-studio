@@ -35,7 +35,49 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  cursor: none;
 }
+@media (hover: none) { body { cursor: auto; } }
+
+/* ---- CUSTOM CURSOR ---- */
+#cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  background: #C8FF73;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  will-change: transform;
+  transition: width 0.3s cubic-bezier(0.16,1,0.3,1),
+              height 0.3s cubic-bezier(0.16,1,0.3,1),
+              border-radius 0.3s;
+}
+
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 38px; height: 38px;
+  border: 1.5px solid rgba(200,255,115,0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  transition: width 0.45s cubic-bezier(0.16,1,0.3,1),
+              height 0.45s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s,
+              opacity 0.3s;
+}
+
+body.cur-hover #cursor { width: 6px; height: 6px; }
+body.cur-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(200,255,115,0.55); }
+body.cur-text  #cursor { width: 2px; height: 24px; border-radius: 2px; }
+body.cur-text  #cursor-ring { opacity: 0; }
+
+@media (hover: none) { #cursor, #cursor-ring { display: none; } }
 
 ::selection { background: var(--accent); color: var(--bg); }
 
@@ -58,22 +100,40 @@ section { padding: 6rem 0; }
 /* ---- NAV ---- */
 nav {
   position: fixed;
-  top: 0;
+  top: 1.25rem;
   left: 0;
   right: 0;
-  z-index: 100;
-  padding: 1.25rem 0;
-  background: rgba(12,12,14,0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
+  z-index: 500;
+  padding: 0 1.5rem;
+  pointer-events: none;
+}
+
+.nav-pill {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(18,18,22,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  padding: 0.6rem 0.6rem 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: all;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+nav.scrolled .nav-pill {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  border-color: rgba(200,255,115,0.1);
 }
 
 .nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  max-width: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -98,19 +158,36 @@ nav {
   font-size: 0.875rem;
   font-weight: 500;
   transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--accent);
+  width: 0;
+  transition: width 0.3s;
 }
 
 .nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-links a.nav-cta::after { display: none; }
 
 .nav-cta {
   background: var(--accent) !important;
-  color: var(--bg) !important;
+  color: #0C0C0E !important;
   padding: 0.6rem 1.25rem;
   border-radius: 100px;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   font-size: 0.8rem !important;
   letter-spacing: 0.02em;
   transition: transform 0.3s, box-shadow 0.3s !important;
+  border: none;
+  outline: none;
 }
 
 .nav-cta:hover {
@@ -224,6 +301,62 @@ nav.is-open .nav-drawer {
 }
 
 body.menu-open { overflow: hidden; }
+
+/* ---- MAGNETIC WRAP ---- */
+.mag-wrap { display: inline-flex; position: relative; }
+
+/* ---- SCROLL REVEAL ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+              transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
+.reveal-d4 { transition-delay: 0.4s; }
+
+/* ---- MARQUEE ---- */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 1.1rem 0;
+  background: #131316;
+}
+.marquee-inner {
+  display: flex;
+  width: max-content;
+  animation: mq-scroll 26s linear infinite;
+}
+.marquee-inner:hover { animation-play-state: paused; }
+@keyframes mq-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.mq-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #4A4A4F;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+.mq-item:hover { color: #8A8A8F; }
+.mq-dot {
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: #C8FF73;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
 /* ---- HERO ---- */
 .hero {
@@ -792,12 +925,11 @@ footer {
 
 @media (max-width: 640px) {
   .container { padding: 0 1.25rem; }
-  .nav-inner,
   .hero-inner { padding: 0 1.25rem; }
   section { padding: 4rem 0; }
-  .nav-toggle { display: flex; }
+  .nav-toggle { display: flex; border-radius: 50%; }
   .nav-links { display: none; }
-  .nav-inner { position: relative; z-index: 102; }
+  .nav-pill { position: relative; z-index: 102; }
   .nav-overlay,
   .nav-drawer { display: flex; pointer-events: none; }
   nav.is-open .nav-overlay,
@@ -813,6 +945,8 @@ footer {
 </style>
 </head>
 <body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
 <!-- NAV -->
 <nav id="nav" aria-label="Main navigation">
@@ -822,22 +956,24 @@ footer {
     <a href="#work">Work</a>
     <a href="#process">Process</a>
     <a href="#about">About</a>
-    <a href="#contact" class="nav-cta">Start a project</a>
+    <span class="mag-wrap"><a href="#contact" class="nav-cta">Start a project</a></span>
   </div>
-  <div class="nav-inner">
-    <a href="#" class="nav-logo">Vision<span>26</span></a>
-    <div class="nav-links">
-      <a href="#services">Services</a>
-      <a href="#work">Work</a>
-      <a href="#process">Process</a>
-      <a href="#about">About</a>
-      <a href="#contact" class="nav-cta">Start a project</a>
+  <div class="nav-pill">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Vision<span>26</span></a>
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#about">About</a>
+        <span class="mag-wrap"><a href="#contact" class="nav-cta">Start a project</a></span>
+      </div>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
-    <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </div>
 </nav>
 
@@ -848,38 +984,48 @@ footer {
     <h1>Websites that work as<br>hard as <em>you do</em></h1>
     <p class="hero-sub">Design and development studio helping growing businesses turn their online presence into their strongest sales tool.</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">
+      <span class="mag-wrap"><a href="#contact" class="btn-primary">
         Book a free call
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#work" class="btn-secondary">View recent work</a>
+      </a></span>
+      <span class="mag-wrap"><a href="#work" class="btn-secondary">View recent work</a></span>
     </div>
 
     <div class="stats-bar">
-      <div class="stat-item">
-        <h3>6+</h3>
-        <p>Years of professional experience</p>
-      </div>
-      <div class="stat-item">
-        <h3>50+</h3>
-        <p>Projects delivered</p>
-      </div>
-      <div class="stat-item">
-        <h3>100%</h3>
-        <p>Senior-level attention on every project</p>
-      </div>
+      <div class="stat-item reveal reveal-d1"><h3>6+</h3><p>Years of professional experience</p></div>
+      <div class="stat-item reveal reveal-d2"><h3>50+</h3><p>Projects delivered</p></div>
+      <div class="stat-item reveal reveal-d3"><h3>100%</h3><p>Senior-level attention on every project</p></div>
     </div>
   </div>
 </section>
 
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-inner">
+    <span class="mq-item"><span class="mq-dot"></span>Brand Identity</span>
+    <span class="mq-item"><span class="mq-dot"></span>Web Design</span>
+    <span class="mq-item"><span class="mq-dot"></span>Development</span>
+    <span class="mq-item"><span class="mq-dot"></span>UI / UX</span>
+    <span class="mq-item"><span class="mq-dot"></span>Framer & Webflow</span>
+    <span class="mq-item"><span class="mq-dot"></span>Design Systems</span>
+    <span class="mq-item"><span class="mq-dot"></span>SEO Strategy</span>
+    <span class="mq-item"><span class="mq-dot"></span>Brand Identity</span>
+    <span class="mq-item"><span class="mq-dot"></span>Web Design</span>
+    <span class="mq-item"><span class="mq-dot"></span>Development</span>
+    <span class="mq-item"><span class="mq-dot"></span>UI / UX</span>
+    <span class="mq-item"><span class="mq-dot"></span>Framer & Webflow</span>
+    <span class="mq-item"><span class="mq-dot"></span>Design Systems</span>
+    <span class="mq-item"><span class="mq-dot"></span>SEO Strategy</span>
+  </div>
+</div>
+
 <!-- SERVICES -->
 <section class="services" id="services">
   <div class="container">
-    <div class="section-label">Services</div>
-    <h2 class="section-title">Everything you need to look credible, convert visitors, and grow.</h2>
+    <div class="section-label reveal">Services</div>
+    <h2 class="section-title reveal">Everything you need to look credible, convert visitors, and grow.</h2>
 
     <div class="services-grid">
-      <div class="service-card">
+      <div class="service-card reveal">
         <div class="service-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
@@ -888,7 +1034,7 @@ footer {
         <div class="service-price">Starting from <span>£3,000</span></div>
       </div>
 
-      <div class="service-card">
+      <div class="service-card reveal reveal-d1">
         <div class="service-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         </div>
@@ -897,7 +1043,7 @@ footer {
         <div class="service-price">From <span>£500/month</span></div>
       </div>
 
-      <div class="service-card">
+      <div class="service-card reveal reveal-d2">
         <div class="service-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
         </div>
@@ -912,11 +1058,11 @@ footer {
 <!-- WORK -->
 <section class="work" id="work">
   <div class="container">
-    <div class="section-label">Selected Work</div>
-    <h2 class="section-title">Projects that moved the needle.</h2>
+    <div class="section-label reveal">Selected Work</div>
+    <h2 class="section-title reveal">Projects that moved the needle.</h2>
 
     <div class="work-grid">
-      <div class="work-card">
+      <div class="work-card reveal">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-1">
             <span class="thumb-mockup">Project Screenshot</span>
@@ -933,7 +1079,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card">
+      <div class="work-card reveal reveal-d1">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-2">
             <span class="thumb-mockup">Project Screenshot</span>
@@ -949,7 +1095,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card">
+      <div class="work-card reveal reveal-d2">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-3">
             <span class="thumb-mockup">Project Screenshot</span>
@@ -965,7 +1111,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card">
+      <div class="work-card reveal reveal-d3">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-4">
             <span class="thumb-mockup">Project Screenshot</span>
@@ -981,7 +1127,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card">
+      <div class="work-card reveal reveal-d4">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-5">
             <span class="thumb-mockup">Project Screenshot</span>
@@ -997,7 +1143,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card">
+      <div class="work-card reveal reveal-d4">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-6">
             <span class="thumb-mockup">Project Screenshot</span>
@@ -1019,23 +1165,23 @@ footer {
 <!-- PROCESS -->
 <section class="process" id="process">
   <div class="container">
-    <div class="section-label">How it works</div>
-    <h2 class="section-title">No fluff. No endless meetings. Just great work, delivered.</h2>
+    <div class="section-label reveal">How it works</div>
+    <h2 class="section-title reveal">No fluff. No endless meetings. Just great work, delivered.</h2>
 
     <div class="process-grid">
-      <div class="process-step">
+      <div class="process-step reveal">
         <h3>Discovery Call</h3>
         <p>A 20-minute conversation to understand your business, goals, and what success looks like. No sales pitch — just a genuine chat.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step reveal reveal-d1">
         <h3>Proposal & Plan</h3>
         <p>A clear, one-page proposal with scope, timeline, and fixed pricing. No surprises, no hourly billing, no scope ambiguity.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step reveal reveal-d2">
         <h3>Design & Build</h3>
         <p>You get a senior designer working directly on your project — not a junior who's been handed a brief. Regular check-ins keep things on track.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step reveal reveal-d3">
         <h3>Launch & Support</h3>
         <p>We launch together, then I stick around for 30 days to fix anything that needs attention. Optional ongoing retainer if you need it.</p>
       </div>
@@ -1047,29 +1193,29 @@ footer {
 <section class="about" id="about">
   <div class="container">
     <div class="about-grid">
-      <div class="about-portrait">
+      <div class="about-portrait reveal">
         <img src="Jack Mattison.jpg" alt="Jack Mattison" class="about-portrait-img">
       </div>
       <div class="about-content">
-        <div class="section-label">About</div>
-        <h2 class="section-title">Senior-level design,<br>without the agency markup.</h2>
-        <p class="about-text">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms.</p>
-        <p class="about-text">Vision26 is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
+        <div class="section-label reveal">About</div>
+        <h2 class="section-title reveal">Senior-level design,<br>without the agency markup.</h2>
+        <p class="about-text reveal reveal-d1">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms.</p>
+        <p class="about-text reveal reveal-d2">Vision26 is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
 
         <div class="about-highlights">
-          <div class="about-highlight">
+          <div class="about-highlight reveal reveal-d1">
             <h4>Background</h4>
             <p>6 years at a leading UK agency</p>
           </div>
-          <div class="about-highlight">
+          <div class="about-highlight reveal reveal-d2">
             <h4>Expertise</h4>
             <p>Design, development & strategy</p>
           </div>
-          <div class="about-highlight">
+          <div class="about-highlight reveal reveal-d3">
             <h4>Approach</h4>
             <p>Fixed pricing, no surprises</p>
           </div>
-          <div class="about-highlight">
+          <div class="about-highlight reveal reveal-d4">
             <h4>Availability</h4>
             <p>2–3 projects at a time</p>
           </div>
@@ -1082,13 +1228,13 @@ footer {
 <!-- CTA -->
 <section class="cta-section" id="contact">
   <div class="container">
-    <div class="section-label">Get started</div>
-    <h2 class="section-title">Got a project in mind?<br>Let's talk.</h2>
-    <p class="cta-subtitle">Book a free 20-minute discovery call. No commitment, no sales pitch — just a conversation about what you need and whether we're a good fit.</p>
-    <a href="mailto:jack@vision26.com" class="btn-primary">
+    <div class="section-label reveal">Get started</div>
+    <h2 class="section-title reveal">Got a project in mind?<br>Let's talk.</h2>
+    <p class="cta-subtitle reveal">Book a free 20-minute discovery call. No commitment, no sales pitch — just a conversation about what you need and whether we're a good fit.</p>
+    <span class="mag-wrap"><a href="mailto:jack@vision26.com" class="btn-primary">
       Book a free call
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+    </a></span>
   </div>
 </section>
 
@@ -1136,10 +1282,69 @@ footer {
     nav.classList.contains('is-open') ? closeMenu() : openMenu();
   });
   if (overlay) overlay.addEventListener('click', closeMenu);
-  drawer.querySelectorAll('a').forEach(function(a) {
+  if (drawer) drawer.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', closeMenu);
   });
+
+  // Nav scroll: add .scrolled past 60px
+  function onScroll() {
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
+
+// --- CUSTOM CURSOR ---
+(function() {
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  if (!cur || !ring) return;
+  let mx = -200, my = -200, rx = -200, ry = -200;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function tick() {
+    rx += (mx - rx) * 0.13;
+    ry += (my - ry) * 0.13;
+    cur.style.transform  = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+    requestAnimationFrame(tick);
+  })();
+  const hoverable = 'a, button, .btn-primary, .btn-ghost, .work-card, .service-card, .process-item, .process-step, [class*="card"]';
+  document.querySelectorAll(hoverable).forEach(function(el) {
+    el.addEventListener('mouseenter', function() { document.body.classList.add('cur-hover'); });
+    el.addEventListener('mouseleave', function() { document.body.classList.remove('cur-hover'); });
+  });
+  document.querySelectorAll('p, li').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { document.body.classList.add('cur-text'); });
+    el.addEventListener('mouseleave', function() { document.body.classList.remove('cur-text'); });
+  });
+})();
+
+// --- MAGNETIC BUTTONS ---
+document.querySelectorAll('.mag-wrap').forEach(function(wrap) {
+  const btn = wrap.firstElementChild;
+  if (!btn) return;
+  wrap.addEventListener('mousemove', function(e) {
+    const r = btn.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width / 2);
+    const dy = e.clientY - (r.top + r.height / 2);
+    btn.style.transform = 'translate(' + (dx * 0.3) + 'px, ' + (dy * 0.3) + 'px)';
+    btn.style.transition = 'none';
+  });
+  wrap.addEventListener('mouseleave', function() {
+    btn.style.transform = '';
+    btn.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+  });
+});
+
+// --- SCROLL REVEAL ---
+(function() {
+  const obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+})();
+
 </script>
 
 </body>
