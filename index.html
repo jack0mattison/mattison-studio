@@ -248,8 +248,6 @@ html.dark nav.scrolled .nav-pill {
 .theme-toggle .icon-light { display: none; }
 html.dark .theme-toggle .icon-dark { display: none; }
 html.dark .theme-toggle .icon-light { display: block; }
-.theme-toggle-drawer { margin-top: 1rem; align-self: flex-start; }
-
 /* Hamburger: hidden on desktop */
 .nav-toggle {
   display: none;
@@ -321,13 +319,13 @@ nav.is-open .nav-overlay {
   box-shadow: 0 24px 48px rgba(0,0,0,0.4);
   flex-direction: column;
   gap: 0.25rem;
-  transform: translateY(-100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transition: opacity 0.2s ease;
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
 }
 nav.is-open .nav-drawer {
-  transform: translateY(0);
+  opacity: 1;
 }
 
 .nav-drawer a {
@@ -1002,6 +1000,7 @@ footer {
 @media (max-width: 640px) {
   .container { padding: 0 1.25rem; }
   .hero-inner { padding: 0 1.25rem; }
+  .hero h1 { font-size: 2rem; }
   section { padding: 4rem 0; }
   .nav-toggle { display: flex; border-radius: 50%; }
   .nav-links { display: none; }
@@ -1010,6 +1009,32 @@ footer {
   .nav-drawer { display: flex; pointer-events: none; }
   nav.is-open .nav-overlay,
   nav.is-open .nav-drawer { pointer-events: auto; }
+  .nav-drawer {
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    border-bottom: none;
+    box-shadow: none;
+    max-height: none;
+  }
+  .nav-drawer a {
+    font-size: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: none;
+  }
+  .nav-drawer a:hover { padding-left: 0; }
+  nav.is-open .nav-pill {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none !important;
+  }
+  html.dark nav.is-open .nav-pill { box-shadow: none !important; }
+  nav.is-open .theme-toggle { display: none; }
   .hero { padding-top: 6rem; min-height: auto; padding-bottom: 3rem; }
   .hero-actions { flex-direction: column; align-items: center; }
   .stats-bar { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem; padding-top: 2rem; }
@@ -1032,10 +1057,6 @@ footer {
     <a href="#work">Work</a>
     <a href="#process">Process</a>
     <a href="#about">About</a>
-    <button type="button" class="theme-toggle theme-toggle-drawer" id="theme-toggle-drawer" aria-label="Toggle dark mode">
-      <svg class="icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-      <svg class="icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
   </div>
   <div class="nav-pill">
     <div class="nav-inner">
@@ -1396,9 +1417,7 @@ footer {
     setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark');
   }
   var btn = document.getElementById('theme-toggle');
-  var btnDrawer = document.getElementById('theme-toggle-drawer');
   if (btn) btn.addEventListener('click', toggleTheme);
-  if (btnDrawer) btnDrawer.addEventListener('click', toggleTheme);
 })();
 
 // --- CUSTOM CURSOR ---
