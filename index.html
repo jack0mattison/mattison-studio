@@ -735,6 +735,13 @@ body.menu-open { overflow: hidden; }
   transition: transform 0.6s;
 }
 
+.work-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .work-card:hover .work-thumb-inner { transform: scale(1.03); }
 
 /* Placeholder project visuals */
@@ -801,6 +808,7 @@ body.menu-open { overflow: hidden; }
 
 .work-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1rem;
 }
@@ -813,6 +821,7 @@ body.menu-open { overflow: hidden; }
   background: var(--accent-dim);
   color: var(--accent);
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 /* ---- PROCESS ---- */
@@ -1174,16 +1183,16 @@ footer {
       <div class="work-card reveal">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-1">
-            <span class="thumb-mockup">Project Screenshot</span>
+            <img src="twang.webp" alt="Twang Tuition project" class="work-thumb-img">
           </div>
         </div>
         <div class="work-info">
-          <h3>EveryBreed</h3>
-          <p>Programmatic content platform — 200+ pages of structured breed data</p>
+          <h3>Twang Tuition</h3>
+          <p>Guitar school website, student portal and lesson resources for Twang Tuition</p>
           <div class="work-tags">
-            <span class="work-tag">Design</span>
-            <span class="work-tag">Development</span>
-            <span class="work-tag">SEO</span>
+            <span class="work-tag">Web Development</span>
+            <span class="work-tag">Graphic Design</span>
+            <span class="work-tag">Branding</span>
           </div>
         </div>
       </div>
@@ -1191,15 +1200,16 @@ footer {
       <div class="work-card reveal reveal-d1">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-2">
-            <span class="thumb-mockup">Project Screenshot</span>
+            <img src="YMT.webp" alt="York Museums Trust infographic project" class="work-thumb-img">
           </div>
         </div>
         <div class="work-info">
-          <h3>Operations OS</h3>
-          <p>Industry-specific Notion operating system for agency management</p>
+          <h3>York Museums Trust</h3>
+          <p>Infographics capturing Curator Battle reach, impact and global engagement</p>
           <div class="work-tags">
-            <span class="work-tag">Product Design</span>
-            <span class="work-tag">Systems</span>
+            <span class="work-tag">Infographic Design</span>
+            <span class="work-tag">Data Visualisation</span>
+            <span class="work-tag">Illustration</span>
           </div>
         </div>
       </div>
@@ -1207,15 +1217,16 @@ footer {
       <div class="work-card reveal reveal-d2">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-3">
-            <span class="thumb-mockup">Project Screenshot</span>
+            <img src="konscious.webp" alt="Konscious Konduit branding project" class="work-thumb-img">
           </div>
         </div>
         <div class="work-info">
-          <h3>Client Project</h3>
-          <p>E-commerce redesign — increased conversion rate by 35%</p>
+          <h3>Konscious Konduit</h3>
+          <p>Spiritual coaching brand identity, logo system and social templates</p>
           <div class="work-tags">
-            <span class="work-tag">UI/UX</span>
-            <span class="work-tag">Development</span>
+            <span class="work-tag">Logo Design</span>
+            <span class="work-tag">Brand Guidelines</span>
+            <span class="work-tag">Social Media</span>
           </div>
         </div>
       </div>
@@ -1223,15 +1234,16 @@ footer {
       <div class="work-card reveal reveal-d3">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-4">
-            <span class="thumb-mockup">Project Screenshot</span>
+            <img src="koffee-house.webp" alt="Koffee House website project" class="work-thumb-img">
           </div>
         </div>
         <div class="work-info">
-          <h3>Client Project</h3>
-          <p>B2B SaaS landing page — 2x improvement in lead generation</p>
+          <h3>Koffee House</h3>
+          <p>Local coffee shop site with digital menu and online ordering</p>
           <div class="work-tags">
-            <span class="work-tag">Design</span>
-            <span class="work-tag">Conversion</span>
+            <span class="work-tag">Web Development</span>
+            <span class="work-tag">WordPress</span>
+            <span class="work-tag">Online Ordering</span>
           </div>
         </div>
       </div>
@@ -1239,15 +1251,16 @@ footer {
       <div class="work-card reveal reveal-d4">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-5">
-            <span class="thumb-mockup">Project Screenshot</span>
+            <img src="jenna.webp" alt="Jenna Bay microsite project" class="work-thumb-img">
           </div>
         </div>
         <div class="work-info">
-          <h3>Client Project</h3>
-          <p>Brand refresh and web presence for professional services firm</p>
+          <h3>Jenna Bay</h3>
+          <p>Single-page artist microsite sharing Jenna's music, story and links</p>
           <div class="work-tags">
-            <span class="work-tag">Brand</span>
-            <span class="work-tag">Web</span>
+            <span class="work-tag">Web Design</span>
+            <span class="work-tag">Microsite</span>
+            <span class="work-tag">Music</span>
           </div>
         </div>
       </div>
@@ -1259,11 +1272,12 @@ footer {
           </div>
         </div>
         <div class="work-info">
-          <h3>Client Project</h3>
-          <p>Membership platform — streamlined signup and retention flows</p>
+          <h3>Carnabells</h3>
+          <p>Tour posters, single artwork and social content for indie band Carnabells</p>
           <div class="work-tags">
-            <span class="work-tag">Product</span>
-            <span class="work-tag">Development</span>
+            <span class="work-tag">Artwork Design</span>
+            <span class="work-tag">Social Media</span>
+            <span class="work-tag">Photography</span>
           </div>
         </div>
       </div>
