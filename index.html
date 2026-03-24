@@ -403,6 +403,7 @@ body.menu-open { overflow: hidden; }
 .reveal-d2 { transition-delay: 0.2s; }
 .reveal-d3 { transition-delay: 0.3s; }
 .reveal-d4 { transition-delay: 0.4s; }
+.reveal-d5 { transition-delay: 0.5s; }
 
 /* ---- MARQUEE ---- */
 .marquee-wrap {
@@ -741,6 +742,14 @@ body.menu-open { overflow: hidden; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  align-items: stretch;
+}
+
+.work-grid > a.work-card-link {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
 }
 
 .work-card {
@@ -751,6 +760,10 @@ body.menu-open { overflow: hidden; }
   border: 1px solid var(--border);
   transition: all 0.4s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
 }
 
 .work-card:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-4px); }
@@ -813,7 +826,32 @@ body.menu-open { overflow: hidden; }
   justify-content: center;
 }
 
-.work-info { padding: 1.5rem 1.75rem; }
+.thumb-6 {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-6 .work-thumb-img {
+  object-position: top center;
+}
+
+a.work-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.work-card-link .work-card {
+  flex: 1;
+}
+
+.work-info {
+  padding: 1.5rem 1.75rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
 
 .work-info h3 {
   font-size: 1.05rem;
@@ -828,7 +866,8 @@ body.menu-open { overflow: hidden; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
 }
 
 .work-tag {
@@ -1274,7 +1313,26 @@ footer {
     <h2 class="section-title reveal">Projects that moved the needle.</h2>
 
     <div class="work-grid">
-      <div class="work-card reveal">
+      <a href="https://designtoolkit.app/" class="work-card-link" target="_blank" rel="noopener noreferrer">
+        <div class="work-card reveal">
+          <div class="work-thumb">
+            <div class="work-thumb-inner thumb-6">
+              <img src="designtoolkit.jpeg" alt="Design Toolkit — suite of CSS design tools" class="work-thumb-img" width="2704" height="3521" loading="lazy">
+            </div>
+          </div>
+          <div class="work-info">
+            <h3>Design Toolkit</h3>
+            <p>Polished CSS generators for gradients, shadows, colour and glassmorphism — production-ready output, no sign-up or install.</p>
+            <div class="work-tags">
+              <span class="work-tag">Web Development</span>
+              <span class="work-tag">Product</span>
+              <span class="work-tag">Frontend</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <div class="work-card reveal reveal-d1">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-1">
             <img src="twang.webp" alt="Twang Tuition project" class="work-thumb-img">
@@ -1291,7 +1349,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card reveal reveal-d1">
+      <div class="work-card reveal reveal-d2">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-2">
             <img src="YMT.webp" alt="York Museums Trust infographic project" class="work-thumb-img">
@@ -1308,7 +1366,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card reveal reveal-d2">
+      <div class="work-card reveal reveal-d3">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-3">
             <img src="konscious.webp" alt="Konscious Konduit branding project" class="work-thumb-img">
@@ -1325,7 +1383,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card reveal reveal-d3">
+      <div class="work-card reveal reveal-d4">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-4">
             <img src="koffee-house.webp" alt="Koffee House website project" class="work-thumb-img">
@@ -1342,7 +1400,7 @@ footer {
         </div>
       </div>
 
-      <div class="work-card reveal reveal-d4">
+      <div class="work-card reveal reveal-d5">
         <div class="work-thumb">
           <div class="work-thumb-inner thumb-5">
             <img src="jenna.webp" alt="Jenna Bay microsite project" class="work-thumb-img">
@@ -1370,7 +1428,7 @@ footer {
 
     <div class="testimonials-grid">
       <blockquote class="testimonial-card reveal">
-        <p class="testimonial-quote">Jack developed and maintained our company website for around 5 years now. He initially designed and built the site to a brilliant standard, understanding immediately the requirements and mechanics of my business and applying these perfectly within the website. He has always been available to help and give advice where required, which is very reassuring when running a day to day business. Jack is a very professional hardworking individual who always gives excellent personal service and whom I couldn&rsquo;t recommend highly enough.</p>
+        <p class="testimonial-quote">Jack and his team developed and maintained our company website for around 5 years now. Jack initially designed and built the site to a brilliant standard, understanding immediately the requirements and mechanics of my business and applying these perfectly within the website. The team has always been available to help and give advice where required, which is very reassuring when running a day to day business. vision26 is a highly professional partner &mdash; excellent service I couldn&rsquo;t recommend highly enough.</p>
         <footer class="testimonial-footer">
           <div class="testimonial-name">Paul Thompson</div>
           <div class="testimonial-meta">Founder, Twang Tuition · Guitar tuition &amp; music school, Leeds</div>
@@ -1378,7 +1436,7 @@ footer {
       </blockquote>
 
       <blockquote class="testimonial-card reveal reveal-d1">
-        <p class="testimonial-quote">I am so happy that I chose Jack to bring my brand to life. It was effortless from start to finish. Jack understood my vision and translated it into a sophisticated package that encapsulated my business values perfectly. The brand guidelines he created are easy to follow, and will allow me to maintain a professional aesthetic online. Thank you so much.</p>
+        <p class="testimonial-quote">I am so happy that I chose vision26 to bring my brand to life. It was effortless from start to finish. Jack and his team understood my vision and translated it into a sophisticated package that encapsulated my business values perfectly. The brand guidelines they created are easy to follow, and will allow me to maintain a professional aesthetic online. Thank you so much.</p>
         <footer class="testimonial-footer">
           <div class="testimonial-name">Founder, Konscious Konduit</div>
           <div class="testimonial-meta">Spiritual coaching · Brand identity &amp; social templates</div>
@@ -1386,7 +1444,7 @@ footer {
       </blockquote>
 
       <blockquote class="testimonial-card reveal reveal-d2">
-        <p class="testimonial-quote">Following the success of our Curator Battle campaign visuals, we were delighted with how the infographics engaged our audiences. That led us to commission further infographic work and graphics for our annual brochure.</p>
+        <p class="testimonial-quote">Following the success of our Curator Battle campaign visuals with vision26, we were delighted with how Jack and his team&rsquo;s infographics engaged our audiences. That led us to commission further infographic work and graphics for our annual brochure.</p>
         <footer class="testimonial-footer">
           <div class="testimonial-name">York Museums Trust</div>
           <div class="testimonial-meta">York Castle Museum, Yorkshire Museum, York Art Gallery &amp; York St Mary&rsquo;s</div>
@@ -1433,8 +1491,8 @@ footer {
       </header>
 
       <div class="about-copy reveal reveal-d1">
-        <p class="about-text">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms.</p>
-        <p class="about-text">vision26 is how I bring that same quality directly to growing businesses — without the overhead, the account managers, or the inflated invoices. You work with me, directly, on every project.</p>
+        <p class="about-text">I'm Jack — a designer and developer with six years of experience at one of the UK's leading marketing agencies. I've worked on everything from startup MVPs to enterprise platforms. vision26 is a small studio: a tight group of creative and technical specialists, each with years of agency experience — so you get real depth and range, without the bloat.</p>
+        <p class="about-text">Together we bring that quality to growing businesses — without the overhead, the account managers, or the inflated invoices. I'm your primary contact from discovery to launch; the same people who make up the studio shape and deliver the work, end to end.</p>
       </div>
 
       <div class="about-highlights">
